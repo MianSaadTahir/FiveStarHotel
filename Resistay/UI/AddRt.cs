@@ -1,36 +1,27 @@
-﻿using HostelDll.Bl;
-using HostelDll.DlDb;
-using HostelDll.Utilities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using HostelDll.DLInterfaces;
 
 namespace Resistay.UI
 {
     public partial class AddRt : Form
     {
-        private string ConnectionString = @"Data Source=ALI-HAMZA;Initial Catalog=FiveStarHostels;Integrated Security=True;";
+        private string ConnectionString = @"Data Source=ALI-HAMZA;Initial Catalog=FiveStarHostels;Integrated Security=True;"; //connection string
         private ErrorProvider errorProvider;
-          
+
         public AddRt()
         {
             InitializeComponent();
             errorProvider = new ErrorProvider();
-            RtHostel.SelectedIndexChanged += RtHostel_SelectedIndexChanged; 
-            gender.TextChanged += gender_TextChanged; 
+            RtHostel.SelectedIndexChanged += RtHostel_SelectedIndexChanged;
+            gender.TextChanged += gender_TextChanged;
             LoadRts();
         }
 
         private void RtHostel_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+
         }
 
         private void gender_TextChanged(object sender, EventArgs e)
@@ -41,10 +32,10 @@ namespace Resistay.UI
             }
             else
             {
-                errorProvider.SetError(gender, ""); 
+                errorProvider.SetError(gender, "");
             }
 
-          
+
             UpdateHostelComboBox();
         }
 
@@ -52,7 +43,7 @@ namespace Resistay.UI
         {
             if (!string.IsNullOrEmpty(gender.Text))
             {
-                string rtGender = gender.Text.ToLower(); 
+                string rtGender = gender.Text.ToLower();
                 List<string> availableHostels = HostelDb.GetHostelNamesByGender(rtGender, ConnectionString);
 
                 if (availableHostels != null && availableHostels.Count > 0)
@@ -78,7 +69,7 @@ namespace Resistay.UI
             }
             else
             {
-                errorProvider.SetError(Cnic, "");  
+                errorProvider.SetError(Cnic, "");
             }
         }
 
@@ -116,7 +107,7 @@ namespace Resistay.UI
             }
             else
             {
-                errorProvider.SetError(password, ""); 
+                errorProvider.SetError(password, "");
             }
         }
 
@@ -141,13 +132,13 @@ namespace Resistay.UI
 
         private void username_TextChanged(object sender, EventArgs e)
         {
-            if (!Validation.IsValidUsername(username.Text) ||   !RtDb.IsDuplicateRt(username.Text, ConnectionString))
+            if (!Validation.IsValidUsername(username.Text) || !RtDb.IsDuplicateRt(username.Text, ConnectionString))
             {
                 errorProvider.SetError(username, "Invalid username!");
             }
             else
             {
-                errorProvider.SetError(username, "");  
+                errorProvider.SetError(username, "");
             }
 
             UpdateHostelComboBox();
@@ -161,21 +152,21 @@ namespace Resistay.UI
             }
             else
             {
-                errorProvider.SetError(PhoneNo, ""); 
+                errorProvider.SetError(PhoneNo, "");
             }
         }
         private void HostelNameLabel_Click(object sender, EventArgs e)
-        { 
+        {
 
         }
 
         private void guna2HtmlLabel3_Click(object sender, EventArgs e)
         {
-             
+
         }
         private void LoadRts()
         {
-            List<RT> Rtlist = RtDb.GeAllRts(ConnectionString);  
+            List<RT> Rtlist = RtDb.GeAllRts(ConnectionString);
             DataTable dataTable = new DataTable();
             dataTable.Columns.Add("Name", typeof(string));
             dataTable.Columns.Add("Gender", typeof(string));
@@ -184,16 +175,16 @@ namespace Resistay.UI
             dataTable.Columns.Add("Hostel", typeof(string));
             dataTable.Columns.Add("PhoneNumber", typeof(string));
 
-             
+
             for (int i = 0; i < Rtlist.Count; i++)
             {
-                dataTable.Rows.Add(Rtlist[i].GetName(), Rtlist[i].GetGender(), Rtlist[i].GetCnic(), Rtlist[i].GetAge(), Rtlist[i].GetHostel().GetHostelName(), Rtlist[i].GetPhoneNumber() );
+                dataTable.Rows.Add(Rtlist[i].GetName(), Rtlist[i].GetGender(), Rtlist[i].GetCnic(), Rtlist[i].GetAge(), Rtlist[i].GetHostel().GetHostelName(), Rtlist[i].GetPhoneNumber());
             }
 
             RtGrid.DataSource = dataTable;
 
-             
-             }
+
+        }
 
         private void AddRt_Load(object sender, EventArgs e)
         {
